@@ -13,7 +13,7 @@ class Bullet3Conan(ConanFile):
     author = "Bincrafters <bincrafters@gmail.com>"
     license = "ZLIB"
     exports = ["LICENSE.txt"]
-    exports_sources = ["CMakeLists.txt"]
+    exports_sources = ["CMakeLists.txt", "%s.tar.gz" % version]
     generators = "cmake"
     source_subfolder = "source_subfolder"
     settings = "os", "arch", "compiler", "build_type"
@@ -29,30 +29,36 @@ class Bullet3Conan(ConanFile):
         "pybullet_numpy": [True, False],
         "network_support": [True, False],
     }
-    default_options = \
-        "shared=False",\
-        "fPIC=True",\
-        "bullet3=False",\
-        "graphical_benchmark=False",\
-        "double_precision=False",\
-        "bt2_thread_locks=False",\
-        "btSoftMultiBodyDynamicsWorld=False",\
-        "pybullet=False",\
-        "pybullet_numpy=False",\
-        "network_support=False",
+    default_options = {
+        "shared" : False,
+        "fPIC" : True,
+        "bullet3" : False,
+        "graphical_benchmark" : False,
+        "double_precision" : False,
+        "bt2_thread_locks" : False,
+        "btSoftMultiBodyDynamicsWorld" : False,
+        "pybullet" : False,
+        "pybullet_numpy" : False,
+        "network_support" : False,
+    }
+    copy_sources = False
 
     def config_options(self):
         if self.settings.os == "Windows":
             self.options.remove("fPIC")
 
     def source(self):
-        tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, self.version), self.md5)
+        if os.path.isfile("%s.tar.gz" % self.version):
+            tools.unzip("%s.tar.gz" % self.version)
+        else:
+            tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, self.version), self.md5)
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self.source_subfolder)
 
     def requirements(self):
-        if self.options.pybullet:
-            self.requires.add("cpython/3.6.4@bincrafters/stable")
+        #if self.options.pybullet:
+        #    self.requires.add("cpython/3.6.4@bincrafters/stable")
+        pass
 
     def configure_cmake(self):
         cmake = CMake(self)
