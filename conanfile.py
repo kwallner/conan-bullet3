@@ -115,3 +115,5 @@ class Bullet3Conan(ConanFile):
 
         self.cpp_info.includedirs = ["include/bullet"]
         self.cpp_info.libs = libs
+
+        self.env_info.BULLET_ROOT = self.package_folder
