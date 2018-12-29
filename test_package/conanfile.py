@@ -8,7 +8,31 @@ import os
 class TestPackageConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
-
+    options = {
+        "shared": [True, False],
+        "fPIC": [True, False],
+        "build_bullet3": [True, False],
+        "graphical_benchmark": [True, False],
+        "double_precision": [True, False],
+        "bt2_thread_locks": [True, False],
+        "btSoftMultiBodyDynamicsWorld": [True, False],
+        "pybullet": [True, False],
+        "pybullet_numpy": [True, False],
+        "network_support": [True, False],
+    }
+    default_options = {
+        "shared" : False,
+        "fPIC" : True,
+        "build_bullet3" : False,
+        "graphical_benchmark" : False,
+        "double_precision" : False,
+        "bt2_thread_locks" : False,
+        "btSoftMultiBodyDynamicsWorld" : False,
+        "pybullet" : False,
+        "pybullet_numpy" : False,
+        "network_support" : False,
+    }
+    
     def build(self):
         cmake = CMake(self)
         cmake.configure()

@@ -21,7 +21,7 @@ class Bullet3Conan(ConanFile):
     options = {
         "shared": [True, False],
         "fPIC": [True, False],
-        "bullet3": [True, False],
+        "build_bullet3": [True, False],
         "graphical_benchmark": [True, False],
         "double_precision": [True, False],
         "bt2_thread_locks": [True, False],
@@ -33,7 +33,7 @@ class Bullet3Conan(ConanFile):
     default_options = {
         "shared" : False,
         "fPIC" : True,
-        "bullet3" : False,
+        "build_bullet3" : False,
         "graphical_benchmark" : False,
         "double_precision" : False,
         "bt2_thread_locks" : False,
@@ -63,7 +63,7 @@ class Bullet3Conan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions["BUILD_BULLET3"] = self.options.bullet3
+        cmake.definitions["BUILD_BULLET3"] = self.options.build_bullet3
         if platform.system() == "Windows":
             cmake.definitions["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
         cmake.definitions["INSTALL_LIBS"] = True
@@ -96,7 +96,7 @@ class Bullet3Conan(ConanFile):
 
     def package_info(self):
         libs = []
-        if self.options.bullet3:
+        if self.options.build_bullet3:
             libs += [
                 "Bullet2FileLoader",
                 "Bullet3Collision",
