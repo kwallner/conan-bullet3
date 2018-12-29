@@ -83,9 +83,6 @@ class Bullet3Conan(ConanFile):
         cmake.definitions["BUILD_EXTRAS"] = False
         cmake.definitions["BUILD_UNIT_TESTS"] = False
         cmake.definitions["CMAKE_DEBUG_POSTFIX"] = ""
-        library_output_path= os.path.join(self.build_folder, "lib", "Debug" if self.settings.build_type == "Debug" else "Release").replace("\\", "/")
-        cmake.definitions["LIBRARY_OUTPUT_PATH"] = library_output_path
-        cmake.definitions["CMAKE_LIBRARY_OUTPUT_DIRECTORY"] = library_output_path
         if self.settings.compiler == "Visual Studio":
             cmake.definitions["USE_MSVC_RUNTIME_LIBRARY_DLL"] = "MD" in self.settings.compiler.runtime
         cmake.configure()
@@ -118,4 +115,3 @@ class Bullet3Conan(ConanFile):
 
         self.cpp_info.includedirs = ["include/bullet"]
         self.cpp_info.libs = libs
-        self.cpp_info.libdirs =  ["lib/%s" % ("Debug" if self.settings.build_type == "Debug" else "Release") ]
